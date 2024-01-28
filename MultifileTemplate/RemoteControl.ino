@@ -26,6 +26,7 @@
 
 //IRreceiver irRX(IR_RCV_PIN);
 int greenLED = 26;
+
 //IRData = IRmsg;
 void RemoteControl() {
  // Read input from PlayStation controller
@@ -73,9 +74,12 @@ void RemoteControlPlaystation() {
     }  
     else if (ps2x.Button(PSB_L1)){
       Serial.println("L1 button pushed");
-      //sendIR.write(&IRmsg);
-      digitalWrite(greenLED, HIGH);
-      delay(30000);
+      digitalWrite(IRLEDpin, HIGH);
+      digitalWrite(greenLEDpin, HIGH);
+      delay(5000);
+      digitalWrite(IRLEDpin, LOW);
+      digitalWrite(greenLEDpin, LOW);
+      delay(1000);
     }
   }
 

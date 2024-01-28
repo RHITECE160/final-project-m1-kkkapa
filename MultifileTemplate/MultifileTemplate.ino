@@ -52,7 +52,8 @@ enum RobotState {
   MANUAL,
   AUTONOMOUS
 };
-
+int IRLEDpin = 3;
+int greenLEDpin = 4;
 
 
 
@@ -72,6 +73,9 @@ const unsigned long movementDuration = 2000;  // Duration for movement forward a
 void setup() {
   Serial.begin(57600);
   Serial.print("Starting up Robot code...... ");
+  // set  LED pin as an OUTPUT
+  pinMode(IRLEDpin, OUTPUT);
+  pinMode(greenLEDpin, OUTPUT);
   setupRSLK();
   setupWaitBtn(LP_LEFT_BTN);
   setupLed(RED_LED);
@@ -120,6 +124,7 @@ void setup() {
     enableRXLEDFeedback(BLUE_LED);
     //linefollowing
     floorCalibration();
+
 }
 
 void loop() {
