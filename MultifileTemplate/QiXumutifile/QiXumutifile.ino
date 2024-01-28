@@ -59,6 +59,7 @@ IRData IRresults;
 #define PS2_SEL 34  //P2.3 <-> yellow wire (also called attention)
 #define PS2_CLK 35  //P6.7 <-> blue wire
 
+int greenLED = ??;
 // Create an instance of the playstation controller object
 PS2X ps2x;
 Servo myServo;
@@ -75,10 +76,14 @@ RemoteMode CurrentRemoteMode = IR_REMOTE;
 const uint16_t lowSpeed = 15;
 const uint16_t fastSpeed = 30;
 
+
+IRData IRmsg;//Value for IRmsg
 void setup() {
   Serial.begin(57600);
   Serial.print("Starting up Robot code...... ");
 
+
+  pinMode(greenLED,OUTPUT); 
   // Run setup code
   setupRSLK();
   myServo.attach(SRV_0);
@@ -144,6 +149,10 @@ void loop() {
     Serial.println("Running remote control with the IR Playstation Controller");
     IRcontrol();
   }
+  IRmsg.protocol = NEC;
+  IRmsg.address = 0xA5;
+  IRmsg.command = 0xC3;
+  IRmsg.isRepeat = false;
 }
 
 
@@ -190,6 +199,12 @@ void loop() {
     }  else if (ps2x.Button(PSB_R1)){
       Serial.println("R1 button pushed");
       myServo.write(40);
+    }
+    else if (ps2x.Button(PSB_L1)){
+      Serial.println("L1 button pushed");
+      sendIR.write(&IRmsg);
+      digitalWrite(greenLED, HIGH);
+      delay(30000);
     }
   }
   

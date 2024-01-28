@@ -14,13 +14,30 @@
   Date: Current Date
   Version: 1.0
 */
+#include <TinyIRremote.h>
 
+/*
+ * Helper macro for getting a macro definition as string
+ */
+#define STR_HELPER(x) #x
+#define STR(x) STR_HELPER(x)
+
+#define IR_RCV_PIN      33
+
+//IRreceiver irRX(IR_RCV_PIN);
+int greenLED = 26;
+//IRData = IRmsg;
 void RemoteControl() {
  // Read input from PlayStation controller
   ps2x.read_gamepad();
 
   // Operate the robot in remote control mode
   RemoteControlPlaystation();
+
+  //IRmsg.protocol = NEC;
+  /*IRmsg.address = 0xA5;
+  IRmsg.command = 0xC3;
+  IRmsg.isRepeat = false;*/
 }
 
 
@@ -54,5 +71,11 @@ void RemoteControlPlaystation() {
       Serial.println("R1 button pushed");
       myservo.write(45);
     }  
+    else if (ps2x.Button(PSB_L1)){
+      Serial.println("L1 button pushed");
+      //sendIR.write(&IRmsg);
+      digitalWrite(greenLED, HIGH);
+      delay(30000);
+    }
   }
 
