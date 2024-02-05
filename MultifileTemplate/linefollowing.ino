@@ -45,7 +45,7 @@ void floorCalibration()
     /* Place Robot On Floor (no line) */
     delay(2000);
     /* Wait until button is pressed to start robot */
-    waitBtnPressed(LP_LEFT_BTN, RED_LED);
+    waitBtnPressed(Leftbut, RED_LED);
 
     delay(500);
 
@@ -58,26 +58,31 @@ void floorCalibration()
 
     /* Must be called prior to using getLinePosition() or readCalLineSensor() */
     calibrateLineSensor(lineColor);
-
+    Serial.println("Done calibrating.");
     /* Disable both motors */
     disableMotor(BOTH_MOTORS);
 
-
+    Serial.println("motor should be off.");
+    
 }
 
-void linefollowing()
-{
+ void linefollowing()
+ {
 
-    uint32_t linePos = getLinePosition();
+     uint32_t linePos = getLinePosition();
+     enableMotor(BOTH_MOTORS);
 
-    if ((linePos > 0) && (linePos < 4000)) {    // turn left
-        setMotorSpeed(LEFT_MOTOR, normalSpeedforlinefollowing);
-        setMotorSpeed(RIGHT_MOTOR, fastSpeedforlinefollowing);
-    } else if (linePos > 5000) {                // turn right
-        setMotorSpeed(LEFT_MOTOR, fastSpeedforlinefollowing);
-        setMotorSpeed(RIGHT_MOTOR, normalSpeedforlinefollowing);
-    } else {                                    // go straight
-        setMotorSpeed(LEFT_MOTOR, normalSpeedforlinefollowing);
-        setMotorSpeed(RIGHT_MOTOR, normalSpeedforlinefollowing);
-    }
-}
+     if ((linePos > 0) && (linePos < 4000)) {    // turn left
+         setMotorDirection(BOTH_MOTORS, MOTOR_DIR_FORWARD);
+         setMotorSpeed(LEFT_MOTOR, 10);
+         setMotorSpeed(RIGHT_MOTOR, 15);
+     } else if (linePos > 5000) {                // turn right
+         setMotorDirection(BOTH_MOTORS, MOTOR_DIR_FORWARD);
+         setMotorSpeed(LEFT_MOTOR,15);
+         setMotorSpeed(RIGHT_MOTOR, 10);
+     } else {                                    // go straight
+         setMotorDirection(BOTH_MOTORS, MOTOR_DIR_FORWARD);
+         setMotorSpeed(LEFT_MOTOR, 10);
+         setMotorSpeed(RIGHT_MOTOR, 10);
+     }
+ }
